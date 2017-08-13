@@ -1,0 +1,258 @@
+<style type="text/css">
+
+body {
+  margin: 0px;
+  background: #111;
+}
+
+#switch {
+  display: none;
+}
+
+@keyframes flicker {
+  0% {
+    opacity: 0.18649;
+  }
+  5% {
+    opacity: 0.63788;
+  }
+  10% {
+    opacity: 0.57943;
+  }
+  15% {
+    opacity: 0.64596;
+  }
+  20% {
+    opacity: 0.75257;
+  }
+  25% {
+    opacity: 0.8355;
+  }
+  30% {
+    opacity: 0.24616;
+  }
+  35% {
+    opacity: 0.06811;
+  }
+  40% {
+    opacity: 0.40978;
+  }
+  45% {
+    opacity: 0.53836;
+  }
+  50% {
+    opacity: 0.33257;
+  }
+  55% {
+    opacity: 0.73818;
+  }
+  60% {
+    opacity: 0.09735;
+  }
+  65% {
+    opacity: 0.90801;
+  }
+  70% {
+    opacity: 0.58132;
+  }
+  75% {
+    opacity: 0.57918;
+  }
+  80% {
+    opacity: 0.51207;
+  }
+  85% {
+    opacity: 0.84697;
+  }
+  90% {
+    opacity: 0.31925;
+  }
+  95% {
+    opacity: 0.43786;
+  }
+  100% {
+    opacity: 0.40515;
+  }
+}
+.html {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;  
+}
+.html::after {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(18, 16, 16, 0.1);
+  opacity: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+.html::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+  z-index: 2;
+  background-size: 100% 0px, 0px, 100%;
+  pointer-events: none;
+}
+
+#switch:checked ~ .html::after {
+  animation: flicker 0.15s infinite;
+}
+
+@keyframes turn-on {
+  0% {
+    transform: scale(1, 0.8) translate3d(0, 0, 0);
+    -webkit-filter: brightness(30);
+    filter: brightness(30);
+    opacity: 1;
+  }
+  3.5% {
+    transform: scale(1, 0.8) translate3d(0, 100%, 0);
+  }
+  3.6% {
+    transform: scale(1, 0.8) translate3d(0, -100%, 0);
+    opacity: 1;
+  }
+  9% {
+    transform: scale(1.3, 0.6) translate3d(0, 100%, 0);
+    -webkit-filter: brightness(30);
+    filter: brightness(30);
+    opacity: 0;
+  }
+  11% {
+    transform: scale(1, 1) translate3d(0, 0, 0);
+    -webkit-filter: contrast(0) brightness(0);
+    filter: contrast(0) brightness(0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1, 1) translate3d(0, 0, 0);
+    -webkit-filter: contrast(1) brightness(1.2) saturate(1.3);
+    filter: contrast(1) brightness(1.2) saturate(1.3);
+    opacity: 1;
+  }
+}
+@keyframes turn-off {
+  0% {
+    transform: scale(1, 1.3) translate3d(0, 0, 0);
+    -webkit-filter: brightness(1);
+    filter: brightness(1);
+    opacity: 1;
+  }
+  60% {
+    transform: scale(1.3, 0.001) translate3d(0, 0, 0);
+    -webkit-filter: brightness(10);
+    filter: brightness(10);
+  }
+  100% {
+    animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+    transform: scale(0, 0.0001) translate3d(0, 0, 0);
+    -webkit-filter: brightness(50);
+    filter: brightness(50);
+  }
+}
+.screen {
+  width: 100%;
+  height: 100%;
+  background: url(502.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+#switch ~ .html > .screen {
+  animation: turn-off 0.55s cubic-bezier(0.23, 1, 0.32, 1);
+  animation-fill-mode: forwards;
+}
+
+#switch:checked ~ .html > .screen {
+  animation: turn-on 4s linear;
+  animation-fill-mode: forwards;
+}
+
+@keyframes overlay-anim {
+  0% {
+    visibility: hidden;
+  }
+  20% {
+    visibility: hidden;
+  }
+  21% {
+    visibility: visible;
+  }
+  100% {
+    visibility: hidden;
+  }
+}
+.overlay {
+  color: #00FF00;
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  font-size: 80px;
+  font-family: Impact, Charcoal, sans-serif;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+#switch:checked ~ .html .overlay {
+  animation: overlay-anim 15s linear;
+  animation-fill-mode: forwards;
+}
+</style>
+<script type="text/javascript" language="javascript">
+function turn_on_off() {
+  checkbox = document.getElementById('switch');  
+  if (checkbox.checked) {
+    document.getElementById('audio_loop').pause()
+    document.getElementById('off').currentTime = 0;
+    document.getElementById('off').play()
+  } else {
+    document.getElementById('audio_loop').currentTime = 0;
+    document.getElementById('on').currentTime = 0;
+    document.getElementById('audio_loop').play()
+    document.getElementById('on').play()
+    document.getElementById('off').pause()
+  }
+  checkbox.checked = !checkbox.checked;
+}
+</script>
+
+<html>
+
+  <input type="checkbox" id="switch" name="switch" checked>
+  <div class="html" onclick="javascript:turn_on_off();" href="javascript:void();">
+    <div class="screen"></div>
+    <div class="overlay">OTR-1</div>
+  </div>
+
+  <audio autoplay id="on">
+    <source src="on.ogg" type="audio/ogg">
+    <source src="on.mp3" type="audio/mpeg">
+  </audio>
+
+  <audio autoplay loop id="audio_loop">
+    <source src="502.ogg" type="audio/ogg">
+    <source src="502.mp3" type="audio/mpeg">
+  </audio>
+
+  <audio id="off">
+    <source src="off.ogg" type="audio/ogg">
+    <source src="off.mp3" type="audio/mpeg">
+  </audio>
+
+
+</html>
